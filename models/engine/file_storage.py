@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
-from models.base_model import BaseModel
 import json
+from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.review import Review
+from models.city import City
+from models.amenity import Amenity
 import os
 """
 File storage engine for storing data
@@ -52,5 +58,20 @@ class FileStorage:
             file = open(file=self.__file_path, mode="r", encoding="utf-8")
             new_dict = json.load(fp=file)
             for key, value in new_dict.items():
-                FileStorage.__objects[key] = BaseModel(**value)
+                obj_class_name = key.split(sep=".")[0]
+                if obj_class_name == "BaseModel":
+                    FileStorage.__objects[key] = BaseModel(**value)
+                elif obj_class_name == "User":
+                    FileStorage.__objects[key] = User(**value)
+                elif obj_class_name == "Place":
+                    FileStorage.__objects[key] = Place(**value)
+                elif obj_class_name == "City":
+                    FileStorage.__objects[key] = City(**value)
+                elif obj_class_name == "Review":
+                    FileStorage.__objects[key] = Review(**value)
+                elif obj_class_name == "State":
+                    FileStorage.__objects[key] = State(**value)
+                else:
+                    FileStorage.__objects[key] = Amenity(**value)
+
             file.close()
