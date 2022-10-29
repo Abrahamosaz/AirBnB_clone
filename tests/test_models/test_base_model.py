@@ -1,6 +1,8 @@
 #!/usr/bin/env pyhton3
+import pep8
 import unittest
 import datetime
+import models
 from models import base_model
 BaseModel = base_model.BaseModel
 """
@@ -20,6 +22,15 @@ class TestBaseModel(unittest.TestCase):
         """
         self.user1 = BaseModel()
         self.date_time = datetime.datetime.now()
+
+    def test_Pep8StyleGuide(self):
+        """
+        Test for pep8 style guide in files
+        """
+        pep8_style = pep8.StyleGuide(quite=True)
+        result = pep8_style.check_files(["models/base_model.py"])
+        self.assertEqual(result.total_errors, 0,
+                         "Found code style errors (Warning)")
 
     def test_doc_module(self):
         self.assertTrue(len(BaseModel.__doc__) > 1)
@@ -54,21 +65,47 @@ class TestBaseModel(unittest.TestCase):
         Test for the correct date and time of the created_at
         attribute
         """
-        self.assertAlmostEqual(self.date_time.second,
-                               self.user1.created_at.second, places=10)
+        self.assertNotEqual(self.date_time.microsecond,
+                            self.user1.created_at.microsecond)
+        self.assertEqual(self.date_time.second, self.user1.created_at.second)
         self.assertEqual(self.date_time.year, self.user1.created_at.year)
         self.assertEqual(self.date_time.month, self.user1.created_at.month)
         self.assertEqual(self.date_time.day, self.user1.created_at.day)
         self.assertEqual(self.date_time.hour, self.user1.created_at.hour)
         self.assertEqual(self.date_time.minute, self.user1.created_at.minute)
 
+    def test_update_datetime(self):
+        """
+        Test for the correct date and time for the updated_at
+        attribute value
+        """
+        self.assertEqual(self.date_time.year, self.user1.updated_at.year)
+        self.assertEqual(self.date_time.month, self.user1.updated_at.month)
+        self.assertEqual(self.date_time.day, self.user1.updated_at.day)
+        self.assertEqual(self.date_time.hour, self.user1.updated_at.hour)
+        self.assertEqual(self.date_time.minute, self.user1.updated_at.minute)
+        self.assertEqual(self.date_time.second, self.user1.updated_at.second)
+        self.assertNotEqual(self.date_time.microsecond,
+                            self.user1.updated_at.microsecond)
+
+        models.storage.save()
+        self.assertEqual(self.date_time.year, self.user1.updated_at.year)
+        self.assertEqual(self.date_time.month, self.user1.updated_at.month)
+        self.assertEqual(self.date_time.day, self.user1.updated_at.day)
+        self.assertEqual(self.date_time.hour, self.user1.updated_at.hour)
+        self.assertEqual(self.date_time.minute, self.user1.updated_at.minute)
+        self.assertEqual(self.date_time.second, self.user1.updated_at.second)
+        self.assertNotEqual(self.date_time.microsecond,
+                            self.user1.updated_at.microsecond)
+
     def test_string_rep(self):
         """
         Test for the string representation of the BaseModel
         class
         """
-        self.assertEqual(self.user1.__str__(), "[BaseModel] " +
-                         "(" + self.user1.id + ") " + str(self.user1.__dict__))
+        self.assertEqual(self.user1.__str__(),
+                         f"[BaseModel] ({self.user1.id}) \
+{self.user1.__dict__}")
 
     def test_save_method(self):
         """

@@ -47,7 +47,7 @@ class FileStorage:
         try:
             with open(self.__file_path, mode="w", encoding="utf-8") as file:
                 json.dump(obj=new_dict, fp=file)
-        except Exception:
+        except FileNotFoundError:
             pass
 
     def reload(self):
@@ -59,19 +59,5 @@ class FileStorage:
             new_dict = json.load(fp=file)
             for key, value in new_dict.items():
                 obj_class_name = key.split(sep=".")[0]
-                if obj_class_name == "BaseModel":
-                    FileStorage.__objects[key] = BaseModel(**value)
-                elif obj_class_name == "User":
-                    FileStorage.__objects[key] = User(**value)
-                elif obj_class_name == "Place":
-                    FileStorage.__objects[key] = Place(**value)
-                elif obj_class_name == "City":
-                    FileStorage.__objects[key] = City(**value)
-                elif obj_class_name == "Review":
-                    FileStorage.__objects[key] = Review(**value)
-                elif obj_class_name == "State":
-                    FileStorage.__objects[key] = State(**value)
-                else:
-                    FileStorage.__objects[key] = Amenity(**value)
-
+                FileStorage.__objects[key] = eval(obj_class_name)(**value)
             file.close()
