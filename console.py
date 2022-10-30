@@ -104,17 +104,29 @@ class HBNBCommand(cmd.Cmd):
                     obj_dict.__delitem__(obj_id_str)
                     models.storage.save()
 
-    def do_all(self, obj):
-        """
-        print all string representation of the class base models
-        """
-        if obj and obj not in classes:
-            print("** class doesn't exist **")
+    def do_all(self, arg):
+        """Prints all string representation of all instances"""
+        main_list = []
+        if arg:
+            if arg not in classes:
+                print("** class doesn't exist **")
+                return
+            for i, j in models.storage.all().items():
+                model_lists = i.split(".")
+                if arg == model_lists[0]:
+                    j_kwargs = j.to_dict()
+                    obj = eval(arg)(**j_kwargs)
+                    main_list.append(str(obj))
+            print(main_list)
+            return
         else:
-            model_instances = []
-            for value in models.storage.all().values():
-                model_instances.append(value.__str__())
-            print(model_instances)
+            for i, j in models.storage.all().items():
+                model_list = i.split(".")
+                j_kwargs = j.to_dict()
+                obj = eval(model_list[0])(**j_kwargs)
+                main_list.append(str(obj))
+            print(main_list)
+            return
 
     def do_update(self, args):
         """
