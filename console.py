@@ -2,6 +2,7 @@
 import cmd
 import sys
 import json
+import datetime
 from models.base_model import BaseModel
 """this program contains the entry point of the command interpreter"""
 classes = ["BaseModel"]
@@ -106,6 +107,42 @@ class HBNBCommand(cmd.Cmd):
             print(main_list)
             return
 
+    def do_update(self, arg):
+        """Update an instance based on the class name and id"""
+        if arg == "":
+            print("** class name missing **")
+            return
+        arg_list = arg.split(" ")
+        
+        if arg_list[0] not in classes:
+            print("** class does not exist **")
+            return
+        elif len(arg_list) == 1:
+            print("** instance id missing **")
+            return
+
+        string = "{}.{}".format(arg_list[0], arg_list[1])
+        with open(path, 'r') as fp:
+            new_dict = json.load(fp)
+        if string not in new_dict.keys():
+            print("** no instance found **")
+            return
+        elif len(arg_list) == 2:
+            print("** attribute name missing **")
+            return
+        elif len(arg_list) == 3:
+            print("** value missing **")
+            return
+
+        for i, j in new_dict.items():
+            if string == i:
+                value = arg_list[3].split('"')
+                j[arg_list[2]] = value[1]
+                j["updated_at"] = datetime.datetime.now().isoformat()
+                with open(path, 'w') as fp:
+                    json.dump(new_dict, fp)
+
+                return
 
 
 
