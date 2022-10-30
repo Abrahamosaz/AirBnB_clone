@@ -24,7 +24,7 @@ class TestFileStorage(unittest.TestCase):
         """
         pep8_style = pep8.StyleGuide(quite=True)
         result = pep8_style.check_files(["models/engine/file_storage.py"])
-        self.seertEqual(result, 0, "Found errors in pe8 style guide (Warning)")
+        self.seertEqual(result, 0)
 
     def test_module_doc(self):
         self.assertTrue(len(FileStorage.__doc__) > 1)
