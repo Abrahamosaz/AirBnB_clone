@@ -19,6 +19,10 @@ class HBNBCommand(cmd.Cmd):
         """Quit command to exit the program\n"""
         return True
 
+    def emptyline(self):
+        """nothing gets printed if no inputs is passed"""
+        return
+
     def do_create(self, arg):
         """create a new instance of arg: create arg"""
         if arg == "":
