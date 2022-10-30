@@ -21,7 +21,7 @@ class FileStorage:
         __objects ->dict: dictionary objets store in the file
         database
     """
-    __file_path = "database.json"
+    __file_path = "file.json"
     __objects = {}
 
     def all(self):
