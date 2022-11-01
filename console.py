@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+"""
+Entry point for our command line interpreter
+"""
 import cmd
 import models
 import re
@@ -10,9 +13,7 @@ Amenity = amenity.Amenity
 City = city.City
 Review = review.Review
 State = state.State
-"""
-Entry point of our commnad line interpreter
-"""
+
 classes = ["BaseModel", "User", "Place", "Review", "State", "Amenity", "City"]
 
 
