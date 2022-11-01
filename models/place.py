@@ -11,6 +11,7 @@ class Place(BaseModel):
     that describe a place
     """
     city_id = ""
+    user_id = ""
     state_id = ""
     name = ""
     description = ""
