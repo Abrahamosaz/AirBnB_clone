@@ -102,8 +102,11 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     obj_dict = models.storage.all()
                     obj_id_str = obj + "." + obj_id
-                    obj_dict.__delitem__(obj_id_str)
-                    models.storage.save()
+                    try:
+                        obj_dict.__delitem__(obj_id_str)
+                        models.storage.save()
+                    except KeyError:
+                        print("** no instance found **")
 
     def do_all(self, arg):
         """Prints all string representation of all instances"""
@@ -163,8 +166,11 @@ class HBNBCommand(cmd.Cmd):
             except ValueError:
                 value = args_list[3].strip(":\"'")
             attr = args_list[2].strip(":\"'")
-            setattr(models.storage.all()[key], attr, value)
-            models.storage.save()
+            try:
+                setattr(models.storage.all()[key], attr, value)
+                models.storage.save()
+            except KeyError:
+                print("** no instance found **")
 
 
 if __name__ == "__main__":
