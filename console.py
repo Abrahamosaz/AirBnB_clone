@@ -81,7 +81,7 @@ class HBNBCommand(cmd.Cmd):
                         inst = obj_dict[obj_id_str]
                         print(inst)
 
-    def do_destory(self, obj):
+    def do_destroy(self, obj):
         """destory an instance and save the change to the file storage engine
         """
         check_flag = 0
